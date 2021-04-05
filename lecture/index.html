@@ -20,22 +20,28 @@
             };
 
 
-
         onSubmit = (e) => {
             e.preventDefault()
             if (parseInt(this.state.value) === this.state.first * this.state.second) {
-                const temp = this.state.first * this.state.second;
-                this.setState({
-                    result: (temp + ' 정답'),
-                    first: Math.ceil(Math.random() * 9),
-                    second: Math.ceil(Math.random() * 9),
-                    value: '',
+                this.setState((prevState) => {
+                    return {
+                        result: '정답 : ' + prevState.value,
+                        first: Math.ceil(Math.random() * 9),
+                        second: Math.ceil(Math.random() * 9),
+                        value: '',
+                    }
                 });
+                this.input.focus();
+
+
+
             } else {
                 this.setState({
                     result: '땡',
                     value: '',
                 });
+                this.input.focus();
+
             }
         };
 
@@ -43,28 +49,34 @@
             this.setState({value: e.target.value})
         };
 
+        refCall = (c) => {
+            this.input = c;
+        };
+
+        input;
+
         render() {
             return (
-                <div>
+                <React.Fragment>
                     <div>{this.state.first} 곱하기 {this.state.second}는?</div>
-                        <input type="number" value={this.state.value} onChange={this.onChange}/>
+                        <input ref={this.refCall} type="number" value={this.state.value} onChange={this.onChange}/>
                         <button onClick={this.onSubmit}>입력!</button>
                     <div>
                         {this.state.result}
                     </div>
-                </div>
+                </React.Fragment>
             );
         }
     }
 </script>
 <script type="text/babel">
     ReactDOM.render(
-            <div>
+            <React.Fragment>
                 <GuGuDan />
                 <GuGuDan />
                 <GuGuDan />
                 <GuGuDan />
-            </div>, document.querySelector('#root'));
+            </React.Fragment>, document.querySelector('#root'));
 </script>
 </body>
 </html>
